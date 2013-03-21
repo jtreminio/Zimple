@@ -33,7 +33,7 @@ abstract class Container
         $finalServiceName = "{$service}-isFinal";
 
         // Not defined
-        if (!self::$pimple->offsetExists($finalServiceName)) {
+        if (!self::$pimple->offsetExists($service)) {
             self::createNewService($service, $parameters);
         }
 
