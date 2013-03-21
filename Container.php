@@ -1,9 +1,6 @@
 <?php
 
-namespace etouches;
-
 use \Pimple;
-use \CWebApplication;
 use \InvalidArgumentException;
 use \ReflectionClass;
 
@@ -25,7 +22,7 @@ abstract class Container
     /**
      * Get service from the container
      *
-     * @param string $service    Service name, "\etouches\Component\UserIdentity"
+     * @param string $service    Service name, "\Namespace\Component\UserIdentity"
      * @param array  $parameters Parameters service may require for constructor
      * @return mixed
      */
@@ -36,7 +33,7 @@ abstract class Container
         $finalServiceName = "{$service}-isFinal";
 
         // Not defined
-        if ($service !== 'app' && !self::$pimple->offsetExists($finalServiceName)) {
+        if (!self::$pimple->offsetExists($finalServiceName)) {
             self::createNewService($service, $parameters);
         }
 
@@ -46,16 +43,6 @@ abstract class Container
         }
 
         return self::$pimple[$service];
-    }
-
-    /**
-     * Wrapper for Yii::app()
-     *
-     * @return CWebApplication
-     */
-    public static function getApp()
-    {
-        return static::get('app');
     }
 
     /**
