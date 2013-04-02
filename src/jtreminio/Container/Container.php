@@ -1,5 +1,7 @@
 <?php
 
+namespace jtreminio\Container;
+
 use \Pimple;
 use \InvalidArgumentException;
 use \ReflectionClass;
