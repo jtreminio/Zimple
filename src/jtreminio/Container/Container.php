@@ -73,6 +73,16 @@ abstract class Container
     }
 
     /**
+     * Clear all defined services
+     */
+    public static function clear()
+    {
+        foreach (self::$pimple->keys() as $key) {
+            self::$pimple->offsetUnset($key);
+        }
+    }
+
+    /**
      * Create a new service in Pimple provider
      *
      * @param string $service    Service name - fully qualified
