@@ -1,0 +1,19 @@
+{
+    "name": "jtreminio/Container",
+    "type": "library",
+    "description": "A wrapper for Pimple that adds several useful features to make it easier to manage your code!",
+    "keywords": ["pimple", "container", "dependency injection", "inversion of control", "dic", "ioc", "testing", "unit testing"],
+    "homepage": "https://github.com/jtreminio/TestExtensions",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juan Treminio",
+            "email": "jtreminio@gmail.com",
+            "homepage": "http://jtreminio.com"
+        }
+    ],
+    "require": {
+        "php":           ">=5.3.0",
+        "pimple/pimple": "1.0.*"
+    }
+}
