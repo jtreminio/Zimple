@@ -5,6 +5,12 @@ namespace jtreminio\Container;
 use \Pimple;
 use \ReflectionClass;
 
+/**
+ * This is a wrapper for Pimple that adds several useful features to make it easier to manage your code!
+ *
+ * @package jtreminio/Container
+ * @author  Juan Treminio <jtreminio@gmail.com>
+ */
 abstract class Container
 {
     /** @var Pimple */
