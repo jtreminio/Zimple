@@ -21,6 +21,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         return $this;
     }
 
+    public function tearDown()
+    {
+        Container::clear();
+    }
+
     public function testGetReturnsService()
     {
         $uniqId = uniqid();
@@ -115,7 +120,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         /** @var $date1 \DateTime */
         $date1 = Container::get('\DateTime', array('2000-01-01'));
 
-        $dateOverride = new \DateTime('2005-01-01');
+        $dateOverride = new \DateTime();
 
         /** @var $date2 \DateTime */
         $this->setService('\DateTime', $dateOverride);
@@ -123,7 +128,6 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $date2 = Container::get('\DateTime');
 
         $expectedResult1 = '946706400';
-        $expectedResult2 = '1104559200';
 
         $this->assertEquals(
             $expectedResult1,
@@ -132,7 +136,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(
-            $expectedResult2,
+            $dateOverride->getTimestamp(),
             $date2->getTimestamp(),
             'Returned timestamp did not match expected for date2'
         );
@@ -161,6 +165,16 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetReturnsPredefinedServiceFromPimple()
     {
+        Container::clear();
+
+        $pimple = new \Pimple;
+
+        $pimple['FooBarDateTime'] = function () {
+            return new \DateTime();
+        };
+
+        Container::setPimple($pimple);
+
         $this->assertInstanceOf(
             '\DateTime',
             Container::get('FooBarDateTime'),
