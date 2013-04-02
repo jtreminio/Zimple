@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A wrapper for Pimple that adds several useful features to make it easier to manage your code!",
     "keywords": ["pimple", "container", "dependency injection", "inversion of control", "dic", "ioc", "testing", "unit testing"],
-    "homepage": "https://github.com/jtreminio/TestExtensions",
+    "homepage": "https://github.com/jtreminio/Container",
     "license": "MIT",
     "authors": [
         {
