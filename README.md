@@ -15,7 +15,7 @@ Then run `./composer.phar update`. This will also install the [Pimple container]
 
 Now just put it in your code:
 
-    Container::setPimple(new Pimple());
+    Container::setPimple(new Pimple);
 
 Usage
 ========
