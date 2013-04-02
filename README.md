@@ -4,6 +4,9 @@ jtreminio/Container
 This is a wrapper around the simple Pimple container. It provides a few features that makes handling objects
 and writing tests much easier.
 
+If you have a codebase that is untestable and you are unable to offer deep refactoring to make it untestable, having a
+container such as this one is a good step toward gaining control over your codebase.
+
 Installation
 =======
 
