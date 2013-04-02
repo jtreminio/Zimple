@@ -11,7 +11,7 @@ Add it to your `composer.json` file:
 
     "jtreminio/container": "1.0.*@dev"
 
-Then run `./composer.phar update`. This will also install the `Pimple container`_
+Then run `./composer.phar update`. This will also install the [Pimple container](https://github.com/fabpot/Pimple)
 
 Now just put it in your code:
 
@@ -51,5 +51,3 @@ Testing
 
 Container makes the process of inserting mocks from your tests extremely easy. It makes use of `::set()` to prevent
 the code from overwriting the PHPUnit mock. Check out the tests for several easy examples.
-
-.. _Pimple container: https://github.com/fabpot/Pimple
