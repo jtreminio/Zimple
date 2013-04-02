@@ -3,7 +3,6 @@
 namespace jtreminio\Container;
 
 use \Pimple;
-use \InvalidArgumentException;
 use \ReflectionClass;
 
 abstract class Container
@@ -32,12 +31,13 @@ abstract class Container
     {
         self::$pimple->offsetSet('parameters', $parameters);
 
-        $finalServiceName = "{$service}-isFinal";
-
-        // Not defined
+        // If service does not exist, add it to Pimple
         if (!self::$pimple->offsetExists($service)) {
             self::createNewService($service, $parameters);
         }
+
+        // Flag for finalizing a definition, preventing overwrites
+        $finalServiceName = "{$service}-isFinal";
 
         // Do this again for services called with new set of parameters
         if (!empty($parameters) && !self::$pimple->offsetExists($finalServiceName)) {
