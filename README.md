@@ -49,6 +49,24 @@ behavior by calling `Container::set()` and setting the third parameter to `true`
 
     // $twoDaysAgo == $tomorrow
 
+You can define objects as you normally would for Pimple before or after passing to Container:
+
+    // From Pimple's homepage
+    $pimple = new Pimple;
+
+    // define some objects
+    $pimple['session_storage'] = function ($c) {
+        return new $c['session_storage_class']($c['cookie_name']);
+    };
+
+    $pimple['session'] = function ($c) {
+        return new Session($c['session_storage']);
+    };
+
+    Container::setPimple($pimple);
+
+Then access them as normal: `$session = Container::get('session_storage');`
+
 Testing
 =========
 
