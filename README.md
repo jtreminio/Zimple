@@ -26,7 +26,7 @@ Container accepts a fully qualified name:
 
 You can also pass in an optional array of parameters for the object constructor:
 
-    $date = Container::get('\DateTime', array('now', Container::get('\DateTimeZone'));
+    $date = Container::get('\DateTime', array('now', Container::get('\DateTimeZone')));
 
 By default Container returns a new instance of an object everytime you call `Container::get()`. You can override this
 behavior by calling `Container::set()` and setting the third parameter to `true`:
