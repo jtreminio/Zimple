@@ -31,23 +31,29 @@ abstract class Container
      *
      * @param string $service    Service name, "\Namespace\Component\UserIdentity"
      * @param array  $parameters Parameters service may require for constructor
+     * @param bool   $final      Flag to override service when parameters are sent.
      * @return mixed
      */
-    public static function get($service, array $parameters = array())
+    public static function get($service, array $parameters = array(), $final = false)
     {
         self::$pimple->offsetSet('parameters', $parameters);
 
-        // If service does not exist, add it to Pimple
-        if (!self::$pimple->offsetExists($service)) {
-            self::createNewService($service, $parameters);
+        $finalServiceName = "{$service}-isFinal";
+
+        if ($final) {
+            self::$pimple->offsetSet($finalServiceName, $service);
         }
 
-        // Flag for finalizing a definition, preventing overwrites
-        $finalServiceName = "{$service}-isFinal";
+        // If service does not exist, add it to Pimple
+        if (!self::$pimple->offsetExists($service)) {
+            self::createNewService($service);
+
+            return self::$pimple[$service];
+        }
 
         // Do this again for services called with new set of parameters
         if (!empty($parameters) && !self::$pimple->offsetExists($finalServiceName)) {
-            self::createNewService($service, $parameters);
+            self::createNewService($service);
         }
 
         return self::$pimple[$service];
@@ -86,11 +92,10 @@ abstract class Container
      * Create a new service in Pimple provider
      *
      * @param string $service    Service name - fully qualified
-     * @param array  $parameters Array of optional parameters
      */
-    private static function createNewService($service, $parameters)
+    private static function createNewService($service)
     {
-        $object = static::getUndefined($service, $parameters);
+        $object = static::getUndefined($service);
 
         self::$pimple[$service] = function () use ($object) {
             return $object;
@@ -105,15 +110,14 @@ abstract class Container
      */
     private static function getUndefined($fqClassName)
     {
-        $reflectionClass = new ReflectionClass($fqClassName);
-
         $parameters = self::$pimple->offsetExists('parameters') ? self::$pimple->offsetGet('parameters') : false;
 
+        // Only use ReflectionClass if parameters are needed in constructor
         if (!empty($parameters)) {
+            $reflectionClass = new ReflectionClass($fqClassName);
             return $reflectionClass->newInstanceArgs($parameters);
         }
 
-        return $reflectionClass->newInstance();
+        return new $fqClassName;
     }
 }
-
