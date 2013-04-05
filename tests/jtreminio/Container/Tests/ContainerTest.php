@@ -181,4 +181,18 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             'Expecting ::get() to return a pre-defined Pimple service'
         );
     }
+
+    public function testGetReturnsSameInstanceWhenDefinedAsFinal()
+    {
+        /** @var $date1 \DateTime */
+        $date1 = Container::get('\DateTime', array('2000-01-01'), true);
+
+        $date2 = Container::get('\DateTime', array('2011-11-11'));
+
+        $this->assertSame(
+            $date1,
+            $date2,
+            'Expecting ::get() to return the same instance of \DateTime when final flag is set to true'
+        );
+    }
 }
