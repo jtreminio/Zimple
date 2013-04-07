@@ -1,9 +1,9 @@
 {
-    "name": "jtreminio/container",
+    "name": "jtreminio/zimple",
     "type": "library",
     "description": "A wrapper for Pimple that adds several useful features to make it easier to manage your code!",
     "keywords": ["pimple", "container", "dependency injection", "inversion of control", "dic", "ioc", "testing", "unit testing"],
-    "homepage": "https://github.com/jtreminio/Container",
+    "homepage": "https://github.com/jtreminio/Zimple",
     "license": "MIT",
     "authors": [
         {
@@ -20,7 +20,7 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": { "jtreminio\\Container": "src/" }
+        "psr-0": { "jtreminio\\Zimple": "src/" }
     },
     "extra": {
         "branch-alias": {

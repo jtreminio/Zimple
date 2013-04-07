@@ -13,7 +13,7 @@
 >
     <testsuites>
         <testsuite name="Container Test Suite">
-            <directory>./tests/jtreminio/Container/</directory>
+            <directory>./tests/jtreminio/Zimple/</directory>
         </testsuite>
     </testsuites>
     <filter>

@@ -1,4 +1,4 @@
-jtreminio/Container
+Zimple
 ======
 
 This is a wrapper around the simple Pimple container. It provides a few features that makes handling objects

@@ -1,6 +1,6 @@
 <?php
 
-namespace jtreminio\Container;
+namespace jtreminio\Zimple;
 
 use \Pimple;
 use \ReflectionClass;
@@ -8,10 +8,10 @@ use \ReflectionClass;
 /**
  * This is a wrapper for Pimple that adds several useful features to make it easier to manage your code!
  *
- * @package jtreminio/Container
+ * @package jtreminio/Zimple
  * @author  Juan Treminio <jtreminio@gmail.com>
  */
-abstract class Container
+abstract class Zimple
 {
     /** @var Pimple */
     private static $pimple;

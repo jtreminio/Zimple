@@ -1,8 +1,8 @@
 <?php
 
-namespace jtreminio\Container\Tests;
+namespace jtreminio\Zimple\Tests;
 
-use jtreminio\Container\Container;
+use jtreminio\Zimple\Zimple as Container;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {

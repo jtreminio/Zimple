@@ -1,8 +1,8 @@
 <?php
 
-use jtreminio\Container\Container;
+use jtreminio\Zimple\Zimple;
 
 $loader = require __DIR__ . '/../vendor/autoload.php';
-$loader->add('jtreminio\Container\Tests', __DIR__);
+$loader->add('jtreminio\Zimple\Tests', __DIR__);
 
-Container::setPimple(new \Pimple);
+Zimple::setPimple(new \Pimple);
