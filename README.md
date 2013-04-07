@@ -12,44 +12,44 @@ Installation
 
 Add it to your `composer.json` file:
 
-    "jtreminio/container": "1.0.*@dev"
+    "jtreminio/zimple": "1.0.*@dev"
 
 Then run `./composer.phar update`. This will also install the [Pimple container](https://github.com/fabpot/Pimple)
 
 Now just put it in your code:
 
-    Container::setPimple(new Pimple);
+    Zimple::setPimple(new Pimple);
 
 Usage
 ========
 
-Container accepts a fully qualified name:
+Zimple accepts a fully qualified name:
 
-    $date = Container::get('\DateTime');
+    $date = Zimple::get('\DateTime');
 
 You can also pass in an optional array of parameters for the object constructor:
 
-    $date = Container::get('\DateTime', array('now', Container::get('\DateTimeZone')));
+    $date = Zimple::get('\DateTime', array('now', Zimple::get('\DateTimeZone')));
 
-By default Container returns a new instance of an object everytime you call `Container::get()`. You can override this
-behavior by calling `Container::set()` and setting the third parameter to `true`:
+By default Zimple returns a new instance of an object everytime you call `Zimple::get()`. You can override this
+behavior by calling `Zimple::set()` and setting the third parameter to `true`:
 
-    $today = Container::get('\DateTime');
-    $tomorrow = Container::get('\DateTime', array('tomorrow'));
+    $today = Zimple::get('\DateTime');
+    $tomorrow = Zimple::get('\DateTime', array('tomorrow'));
 
     // $today !== $tomorrow
 
-    Container::set('\DateTime', $tomorrow, true);
+    Zimple::set('\DateTime', $tomorrow, true);
 
-    $tomorrowDup = Container::get('\DateTime');
+    $tomorrowDup = Zimple::get('\DateTime');
 
     // $tomorrowDup == $tomorrow
 
-    $twoDaysAgo = Container::get('\DateTime', array('2 days ago'));
+    $twoDaysAgo = Zimple::get('\DateTime', array('2 days ago'));
 
     // $twoDaysAgo == $tomorrow
 
-You can define objects as you normally would for Pimple before or after passing to Container:
+You can define objects as you normally would for Pimple before or after passing to Zimple:
 
     // From Pimple's homepage
     $pimple = new Pimple;
@@ -63,12 +63,25 @@ You can define objects as you normally would for Pimple before or after passing 
         return new Session($c['session_storage']);
     };
 
-    Container::setPimple($pimple);
+    Zimple::setPimple($pimple);
 
-Then access them as normal: `$session = Container::get('session_storage');`
+Then access them as normal: `$session = Zimple::get('session_storage');`
+
+Zimple is a Weird Name
+=========
+
+Zimple wraps around Pimple, which is a gross name. [SandyZoop](http://www.reddit.com/user/SandyZoop) recommended
+I name it Cyst or Zit, which is equally gross. The goal of this container is to make dependency management simple
+and easy to use, and make previously untestable code testable. Simple -> Zimple.
+
+You can always alias it with
+
+    use jtreminio\Zimple\Zimple as Container;
+    Container::setPimple(new Pimple);
+    $date = Container::get('\DateTime');
 
 Testing
 =========
 
-Container makes the process of inserting mocks from your tests extremely easy. It makes use of `::set()` to prevent
+Zimple makes the process of inserting mocks from your tests extremely easy. It makes use of `::set()` to prevent
 the code from overwriting the PHPUnit mock. Check out the tests for several easy examples.
