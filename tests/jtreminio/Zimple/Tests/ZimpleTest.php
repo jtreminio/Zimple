@@ -4,7 +4,7 @@ namespace jtreminio\Zimple\Tests;
 
 use jtreminio\Zimple\Zimple as Container;
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ZimpleTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Override service container
