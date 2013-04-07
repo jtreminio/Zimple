@@ -72,7 +72,9 @@ Zimple is a Weird Name
 
 Zimple wraps around Pimple, which is a gross name. [SandyZoop](http://www.reddit.com/user/SandyZoop) recommended
 I name it Cyst or Zit, which is equally gross. The goal of this container is to make dependency management simple
-and easy to use, and make previously untestable code testable. Simple -> Zimple.
+and easy to use, and make previously untestable code testable.
+
+Pimple + Simple = Zimple.
 
 You can always alias it with
 
