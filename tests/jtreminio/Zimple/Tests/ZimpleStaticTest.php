@@ -2,22 +2,18 @@
 
 namespace jtreminio\Zimple\Tests;
 
-use jtreminio\Zimple\Zimple as Container;
+use jtreminio\Zimple\ZimpleStatic as Container;
 
-class ZimpleTest extends \PHPUnit_Framework_TestCase
+class ZimpleStaticTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Container */
-    public $container;
-
-    public function setUp()
+    public static function setUpBeforeClass()
     {
-        $this->container = new Container;
-        $this->container->setPimple(new \Pimple);
+        Container::setPimple(new \Pimple);
     }
 
     public function tearDown()
     {
-        $this->container->clear();
+        Container::clear();
     }
 
     /**
@@ -30,7 +26,7 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
      */
     protected final function setService($name, $service, $final = true)
     {
-        $this->container->set($name, $service, $final);
+        Container::set($name, $service, $final);
 
         return $this;
     }
@@ -44,8 +40,8 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $string,
-            $this->container->get($uniqId),
-            "Expected \$this->container->get() to return {$string}"
+            Container::get($uniqId),
+            "Expected \$container::get() to return {$string}"
         );
     }
 
@@ -54,7 +50,7 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
         $date = '2000-01-01';
 
         /** @var $date \DateTime */
-        $date = $this->container->get('\DateTime', array($date));
+        $date = Container::get('\DateTime', array($date));
 
         $expectedResult = '946706400';
 
@@ -67,7 +63,7 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
 
     public function testGetReturnsInstantiatedObjectWhenNotADefinedService()
     {
-        $stdClass = $this->container->get('\stdClass');
+        $stdClass = Container::get('\stdClass');
 
         $this->assertInstanceOf(
             '\stdClass',
@@ -79,7 +75,7 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
     public function testGetReturnsInstantiatedObjectWithConstructorParametersWhenNotADefinedService()
     {
         /** @var $date \DateTime */
-        $date = $this->container->get('\DateTime', array('2000-01-01'));
+        $date = Container::get('\DateTime', array('2000-01-01'));
 
         $expectedResult = '946706400';
 
@@ -93,13 +89,13 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
     public function testGetReturnsNewObjectsWhenParametersAreDifferent()
     {
         /** @var $date1 \DateTime */
-        $date1 = $this->container->get('\DateTime', array('2000-01-01'));
+        $date1 = Container::get('\DateTime', array('2000-01-01'));
 
         /** @var $date2 \DateTime */
-        $date2 = $this->container->get('\DateTime', array('2005-01-01'));
+        $date2 = Container::get('\DateTime', array('2005-01-01'));
 
         /** @var $date3 \DateTime */
-        $date3 = $this->container->get('\DateTime', array('2013-01-01'));
+        $date3 = Container::get('\DateTime', array('2013-01-01'));
 
         $expectedResult1 = '946706400';
         $expectedResult2 = '1104559200';
@@ -127,14 +123,14 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
     public function testSetOverridesExistingServiceWithNew()
     {
         /** @var $date1 \DateTime */
-        $date1 = $this->container->get('\DateTime', array('2000-01-01'));
+        $date1 = Container::get('\DateTime', array('2000-01-01'));
 
         $dateOverride = new \DateTime();
 
         /** @var $date2 \DateTime */
         $this->setService('\DateTime', $dateOverride);
 
-        $date2 = $this->container->get('\DateTime');
+        $date2 = Container::get('\DateTime');
 
         $expectedResult1 = '946706400';
 
@@ -154,16 +150,16 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
     public function testSetPreventsOverrideOfExistingServiceWhenFlagged()
     {
         /** @var $date1 \DateTime */
-        $date1 = $this->container->get('\DateTime', array('2000-01-01'));
+        $date1 = Container::get('\DateTime', array('2000-01-01'));
 
         $dateOverride = new \DateTime('2005-01-01');
 
         /** @var $date2 \DateTime */
-        $this->container->set('\DateTime', $dateOverride, true);
+        Container::set('\DateTime', $dateOverride, true);
 
-        $date2 = $this->container->get('\DateTime');
+        $date2 = Container::get('\DateTime');
 
-        $date3 = $this->container->get('\DateTime', array('2000-01-01'));
+        $date3 = Container::get('\DateTime', array('2000-01-01'));
 
         $this->assertSame(
             $date2,
@@ -174,7 +170,7 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
 
     public function testGetReturnsPredefinedServiceFromPimple()
     {
-        $this->container->clear();
+        Container::clear();
 
         $pimple = new \Pimple;
 
@@ -182,11 +178,11 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
             return new \DateTime();
         };
 
-        $this->container->setPimple($pimple);
+        Container::setPimple($pimple);
 
         $this->assertInstanceOf(
             '\DateTime',
-            $this->container->get('FooBarDateTime'),
+            Container::get('FooBarDateTime'),
             'Expecting ::get() to return a pre-defined Pimple service'
         );
     }
@@ -194,9 +190,9 @@ class ZimpleTest extends \PHPUnit_Framework_TestCase
     public function testGetReturnsSameInstanceWhenDefinedAsFinal()
     {
         /** @var $date1 \DateTime */
-        $date1 = $this->container->get('\DateTime', array('2000-01-01'), true);
+        $date1 = Container::get('\DateTime', array('2000-01-01'), true);
 
-        $date2 = $this->container->get('\DateTime', array('2011-11-11'));
+        $date2 = Container::get('\DateTime', array('2011-11-11'));
 
         $this->assertSame(
             $date1,

@@ -8,24 +8,22 @@ use \ReflectionClass;
 /**
  * This is a wrapper for Pimple that adds several useful features to make it easier to manage your code!
  *
- * This is the non-static version.
- *
  * @package jtreminio/Zimple
  * @author  Juan Treminio <jtreminio@gmail.com>
  */
-class Zimple
+abstract class ZimpleStatic
 {
     /** @var Pimple */
-    private $pimple;
+    private static $pimple;
 
     /**
      * Set the Pimple instance
      *
      * @param Pimple $pimple
      */
-    public function setPimple(Pimple $pimple)
+    public static function setPimple(Pimple $pimple)
     {
-        $this->pimple = $pimple;
+        static::$pimple = $pimple;
     }
 
     /**
@@ -36,29 +34,29 @@ class Zimple
      * @param bool   $final      Flag to override service when parameters are sent.
      * @return mixed
      */
-    public function get($service, array $parameters = array(), $final = false)
+    public static function get($service, array $parameters = array(), $final = false)
     {
-        $this->pimple->offsetSet('parameters', $parameters);
+        self::$pimple->offsetSet('parameters', $parameters);
 
         $finalServiceName = "{$service}-isFinal";
 
         if ($final) {
-            $this->pimple->offsetSet($finalServiceName, $service);
+            self::$pimple->offsetSet($finalServiceName, $service);
         }
 
         // If service does not exist, add it to Pimple
-        if (!$this->pimple->offsetExists($service)) {
-            $this->createNewService($service);
+        if (!self::$pimple->offsetExists($service)) {
+            self::createNewService($service);
 
-            return $this->pimple[$service];
+            return self::$pimple[$service];
         }
 
         // Do this again for services called with new set of parameters
-        if (!empty($parameters) && !$this->pimple->offsetExists($finalServiceName)) {
-            $this->createNewService($service);
+        if (!empty($parameters) && !self::$pimple->offsetExists($finalServiceName)) {
+            self::createNewService($service);
         }
 
-        return $this->pimple[$service];
+        return self::$pimple[$service];
     }
 
     /**
@@ -68,25 +66,25 @@ class Zimple
      *                            mocked object from our tests and not allowing our code to override the mock with a
      *                            new service definition.
      */
-    public function set($serviceName, $service, $final = false)
+    public static function set($serviceName, $service, $final = false)
     {
-        $this->pimple->offsetUnset($serviceName);
+        self::$pimple->offsetUnset($serviceName);
 
-        $this->pimple->offsetSet($serviceName, $service);
+        self::$pimple->offsetSet($serviceName, $service);
 
         if ($final) {
             $finalServiceName = "{$serviceName}-isFinal";
-            $this->pimple->offsetSet($finalServiceName, 1);
+            self::$pimple->offsetSet($finalServiceName, 1);
         }
     }
 
     /**
      * Clear all defined services
      */
-    public function clear()
+    public static function clear()
     {
-        foreach ($this->pimple->keys() as $key) {
-            $this->pimple->offsetUnset($key);
+        foreach (self::$pimple->keys() as $key) {
+            self::$pimple->offsetUnset($key);
         }
     }
 
@@ -95,11 +93,11 @@ class Zimple
      *
      * @param string $service    Service name - fully qualified
      */
-    private function createNewService($service)
+    private static function createNewService($service)
     {
-        $object = $this->getUndefined($service);
+        $object = static::getUndefined($service);
 
-        $this->pimple[$service] = function () use ($object) {
+        self::$pimple[$service] = function () use ($object) {
             return $object;
         };
     }
@@ -110,9 +108,9 @@ class Zimple
      * @param string $fqClassName Fully qualified class name
      * @return object
      */
-    private function getUndefined($fqClassName)
+    private static function getUndefined($fqClassName)
     {
-        $parameters = $this->pimple->offsetExists('parameters') ? $this->pimple->offsetGet('parameters') : false;
+        $parameters = self::$pimple->offsetExists('parameters') ? self::$pimple->offsetGet('parameters') : false;
 
         // Only use ReflectionClass if parameters are needed in constructor
         if (!empty($parameters)) {
