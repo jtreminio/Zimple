@@ -31,6 +31,8 @@ class Zimple extends Pimple
      */
     public function set($id, $value, array $parameters = array())
     {
+        $id = ltrim($id, '\\');
+
         // We want to keep parameters around if setting this object
         if (!empty($parameters) && !$this->offsetExists("lock.{$id}")) {
             $serializedParams = md5(serialize($parameters));
@@ -69,6 +71,8 @@ class Zimple extends Pimple
      */
     public function get($id, array $parameters = array())
     {
+        $id = ltrim($id, '\\');
+
         // If service does not exist, return new object without creating definition in container
         if (!$this->offsetExists($id)) {
             return $this->getUndefined($id, $parameters);
@@ -96,6 +100,8 @@ class Zimple extends Pimple
      */
     public function lock($id, $value, array $parameters = array())
     {
+        $id = ltrim($id, '\\');
+
         $obj = $this->set($id, $value, $parameters);
         $this->offsetSet("lock.{$id}", true);
 
